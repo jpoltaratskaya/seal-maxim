@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>День рождения Максима — я НЕРПА!</title>
+  <style>
+    :root{
+      --sea:#0f9bd7;
+      --deep:#0a6ea0;
+      --foam:#e6f7ff;
+      --sand:#fff8e7;
+      --ink:#102a43;
+      --mint:#b9f5e2;
+      --accent:#ffd34d;
+      --rose:#ff8fb3;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;}
+    body{
+      margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Noto Sans",sans-serif;
+      color:var(--ink);background:linear-gradient(180deg,var(--foam),#d9f3ff 30%, var(--sea) 100%);
+      overflow-x:hidden;
+    }
+    a{color:var(--deep)}
+    h1,h2,h3{margin:0 0 .5rem 0}
+    .container{max-width:1100px;margin:0 auto;padding:16px}
+
+    /* Top wave header */
+    header{
+      position:relative;overflow:hidden;border-bottom:6px solid var(--deep);
+      background:linear-gradient(180deg, #c7f1ff, #9fe7ff);
+      box-shadow:0 8px 24px rgba(0,0,0,.12);
+    }
+    .wave{position:absolute;left:0;right:0;bottom:-1px;height:80px;background-repeat:repeat-x;background-size:1200px 80px;animation:drift 12s linear infinite;opacity:.9}
+    .wave.top{background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="80" viewBox="0 0 1200 80"><path fill="%230a6ea0" d="M0,40 C150,0 350,80 600,40 C850,0 1050,80 1200,40 L1200,80 L0,80 Z"/></svg>')}
+    .wave.mid{animation-duration:18s;opacity:.7;background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="80" viewBox="0 0 1200 80"><path fill="%230f9bd7" d="M0,50 C200,10 400,90 600,50 C800,10 1000,90 1200,50 L1200,80 L0,80 Z"/></svg>')}
+    .wave.bot{animation-duration:26s;opacity:.4;background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="80" viewBox="0 0 1200 80"><path fill="%23ffffff" d="M0,60 C200,20 400,100 600,60 C800,20 1000,100 1200,60 L1200,80 L0,80 Z"/></svg>')}
+    @keyframes drift{from{background-position-x:0}to{background-position-x:1200px}}
+
+    /* Badge */
+    .badge{display:inline-block;background:var(--accent);color:#432; padding:6px 12px;border-radius:999px;font-weight:700;box-shadow:0 4px 0 rgba(0,0,0,.12)}
+
+    /* Flex & cards */
+    .grid{display:grid;gap:16px}
+    .grid-3{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+    .card{background:white;border-radius:20px;padding:16px;box-shadow:0 10px 30px rgba(0,0,0,.12);border:2px solid #d7f2ff}
+
+    /* Tabs */
+    .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+    .tab{padding:10px 14px;border-radius:12px;background:#e7f7ff;border:2px solid #bfeaff;cursor:pointer;font-weight:600}
+    .tab[aria-selected="true"]{background:white;border-color:var(--deep);box-shadow:0 6px 16px rgba(0,0,0,.08)}
+
+    /* CTA buttons */
+    .btn{appearance:none;border:none;background:var(--deep);color:white;padding:10px 14px;border-radius:12px;font-weight:700;cursor:pointer;box-shadow:0 8px 18px rgba(10,110,160,.35);transition:transform .05s}
+    .btn:hover{transform:translateY(-1px)}
+    .btn.alt{background:var(--rose)}
+    .btn.ghost{background:#fff;color:var(--deep);border:2px solid var(--deep)}
+
+    /* Wishlist */
+    .wish-item{display:flex;gap:8px;align-items:center;justify-content:space-between;border:1px dashed #bfeaff;border-radius:12px;padding:8px}
+    .wish-item.reserved{background:#f6ffec;border-color:#b6f0b6}
+    .wish-title{font-weight:600}
+
+    /* Seal mascot */
+    .seal{
+      width:220px;max-width:40vw;position:relative;display:block;margin:auto;
+      filter: drop-shadow(0 12px 24px rgba(0,0,0,.25));
+    }
+    .seal .eye{transform-origin:center;transition:transform .1s}
+    .float{animation:float 4s ease-in-out infinite}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+    /* Game area */
+    #gameArea{background:linear-gradient(180deg,#e6fbff,#b6f5ff);border:2px solid #bfeaff;border-radius:16px;height:360px;position:relative;overflow:hidden}
+    .fish{position:absolute;width:60px;aspect-ratio:1;background:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 60"><path fill="%230a6ea0" d="M100 30c-15-10-25-15-35-15C45 15 30 25 30 30s15 15 35 15c10 0 20-5 35-15z"/><circle cx="50" cy="30" r="8" fill="%23ffffff"/><circle cx="53" cy="30" r="3" fill="%230a6ea0"/></svg>') center/contain no-repeat;}
+    .bubble{position:absolute;width:24px;height:24px;border:2px solid #9fe7ff;border-radius:50%;background:rgba(255,255,255,.35);backdrop-filter:blur(2px)}
+    .score{position:absolute;top:8px;left:8px;background:rgba(255,255,255,.8);padding:6px 10px;border-radius:10px;font-weight:700;border:1px solid #bfeaff}
+
+    /* Footer */
+    footer{padding:32px 0;text-align:center;color:#04415c}
+
+    /* Small helpers */
+    .row{display:flex;gap:8px;flex-wrap:wrap}
+    .field{display:flex;flex-direction:column;gap:6px}
+    input[type="text"], input[type="datetime-local"], textarea{padding:10px 12px;border-radius:10px;border:2px solid #bfeaff}
+    label{font-weight:700}
+    .pill{display:inline-block;padding:6px 10px;border-radius:999px;background:#e7fff6;border:1px solid #b9f5e2;margin-right:6px}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container" style="padding:24px 16px 80px 16px;">
+      <span class="badge">Приглашение</span>
+      <h1 style="font-size:clamp(28px,5vw,48px);margin-top:10px;">День рождения Максима — 13!</h1>
+      <p style="font-size:1.1rem;max-width:900px">Привет! Меня зовут Максим, и я обожаю нерп. Я сам всегда говорю: <strong>«Я нерпа!»</strong> Приходи на мой праздник — будет весело: игры, призы, пузыри и вкусняшки!</p>
+      <div class="row" style="margin-top:12px">
+        <button class="btn" id="scrollGames">Играть с Нерпой</button>
+        <button class="btn ghost" id="scrollVenue">Где и когда?</button>
+        <button class="btn alt" id="scrollWishlist">Wishlist</button>
+      </div>
+    </div>
+    <div class="wave top"></div>
+    <div class="wave mid"></div>
+    <div class="wave bot"></div>
+  </header>
+
+  <main class="container" style="margin-top:20px">
+    <!-- Mascot + quick facts -->
+    <section class="card grid" style="grid-template-columns:minmax(240px,320px) 1fr;align-items:center;gap:24px">
+      <div>
+        <!-- Cute seal SVG -->
+        <svg class="seal float" viewBox="0 0 220 160" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Нерпа маскот">
+          <ellipse cx="110" cy="130" rx="80" ry="16" fill="rgba(0,0,0,.08)"/>
+          <path d="M30 80c0-38 32-58 80-58s80 20 80 58-32 58-80 58S30 118 30 80z" fill="#f5fdff" stroke="#9fe7ff" stroke-width="3"/>
+          <circle class="eye" id="eyeL" cx="90" cy="88" r="10" fill="#12394a"/>
+          <circle class="eye" id="eyeR" cx="140" cy="88" r="10" fill="#12394a"/>
+          <circle cx="115" cy="110" r="6" fill="#12394a"/>
+          <path d="M104 116c10 6 22 6 32 0" stroke="#12394a" stroke-width="3" stroke-linecap="round"/>
+          <path d="M40 96c-12-2-20-10-20-18 8 2 16 2 24 0M200 96c12-2 20-10 20-18-8 2-16 2-24 0" stroke="#9fe7ff" stroke-width="3" stroke-linecap="round"/>
+          <path d="M74 132c-8 8-20 12-32 12 10-10 18-22 18-32" stroke="#9fe7ff" stroke-width="4" stroke-linecap="round"/>
+          <path d="M166 132c8 8 20 12 32 12-10-10-18-22-18-32" stroke="#9fe7ff" stroke-width="4" stroke-linecap="round"/>
+        </svg>
+        <p style="text-align:center;margin-top:8px;font-weight:700">«Я нерпа!» 🦭</p>
+      </div>
+      <div>
+        <h2>Что будет?</h2>
+        <ul>
+          <li>🎮 Зал с игровыми автоматами, мини-турниры и призы.</li>
+          <li>🫧 Пузырь-лоунж и фотозона с Нерпой.</li>
+          <li>🧁 Торт, напитки и весёлые конкурсы.</li>
+        </ul>
+        <p class="pill">Дресс-код: что-нибудь морское 🌊</p>
+        <p class="pill">Можно приносить плавники, хвосты и хорошее настроение</p>
+      </div>
+    </section>
+
+    <!-- Tabs -->
+    <nav class="tabs" role="tablist" aria-label="Разделы">
+      <button class="tab" role="tab" aria-selected="true" aria-controls="tab-games" id="tabbtn-games">Игры с Нерпой</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="tab-venue" id="tabbtn-venue">Где и когда</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="tab-wishlist" id="tabbtn-wishlist">Wishlist</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="tab-rsvp" id="tabbtn-rsvp">RSVP</button>
+    </nav>
+
+    <!-- GAMES TAB -->
+    <section id="tab-games" role="tabpanel" aria-labelledby="tabbtn-games" class="card">
+      <div class="grid grid-3">
+        <div>
+          <h3>Мини-игра: «Покорми Нерпочку»</h3>
+          <p>Лови рыбок кликом до того, как они уплывут! За 30 секунд набери как можно больше очков.</p>
+          <div id="gameArea" aria-label="Игровая зона">
+            <div class="score">Очки: <span id="score">0</span> | ⏱ <span id="time">30</span>с</div>
+          </div>
+          <div class="row" style="margin-top:10px">
+            <button class="btn" id="startGame">Старт</button>
+            <button class="btn ghost" id="resetGame">Сброс</button>
+          </div>
+        </div>
+        <div>
+          <h3>Мини-игра: «Пузырь-поп»</h3>
+          <p>Лопай пузыри — это приятно. Попробуй сделать комбо из 5 пузырей!</p>
+          <div id="bubbles" style="position:relative;height:220px;border:2px dashed #bfeaff;border-radius:16px;background:linear-gradient(180deg,#ffffff,#ecfbff);overflow:hidden"></div>
+          <div style="margin-top:10px">Лопнуто пузырей: <strong id="bubbleScore">0</strong></div>
+          <button class="btn" id="burst">Сгенерировать пузыри</button>
+        </div>
+        <div>
+          <h3>Загадки от Нерпы</h3>
+          <p id="riddle">Я прячусь в Байкале, люблю рыбку, кто я? 🤔</p>
+          <button class="btn" id="nextRiddle">Дальше</button>
+          <p id="riddleAnswer" style="font-weight:700;margin-top:8px"></p>
+          <hr>
+          <p>Подсказка: нерпы — единственные пресноводные тюлени в мире!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- VENUE TAB -->
+    <section id="tab-venue" role="tabpanel" aria-labelledby="tabbtn-venue" class="card" hidden>
+      <h3>Где и когда встречаемся?</h3>
+      <div class="grid" style="grid-template-columns:1.1fr .9fr;gap:16px">
+        <div class="card" style="background:var(--sand)">
+          <div class="row">
+            <div class="field" style="flex:1">
+              <label for="eventTitle">Название</label>
+              <input id="eventTitle" type="text" value="День рождения Максима"/>
+            </div>
+            <div class="field">
+              <label for="eventDate">Дата и время</label>
+              <input id="eventDate" type="datetime-local" />
+            </div>
+          </div>
+          <div class="field" style="margin-top:8px">
+            <label for="eventPlace">Место</label>
+            <input id="eventPlace" type="text" value="Зал с игровыми автоматами «Arcadia»"/>
+          </div>
+          <div class="field">
+            <label for="eventAddr">Адрес</label>
+            <input id="eventAddr" type="text" value="ул. Примерная, 7"/>
+          </div>
+          <div class="field">
+            <label for="eventNotes">Комментарий</label>
+            <textarea id="eventNotes" rows="3">Берите удобную обувь для турниров и улыбки для фото с Нерпой 🦭</textarea>
+          </div>
+          <div class="row" style="margin-top:8px">
+            <button class="btn" id="copyAddr">Скопировать адрес</button>
+            <button class="btn alt" id="addToCalendar">Добавить в календарь (.ics)</button>
+          </div>
+        </div>
+        <div class="card" style="display:flex;align-items:center;justify-content:center;flex-direction:column">
+          <h4 style="margin-bottom:8px">Правила зала</h4>
+          <ul style="margin:0 0 10px 0">
+            <li>Играть бережно и по очереди.</li>
+            <li>Сохранять жетоны — они пригодятся на призы.</li>
+            <li>Не кормить настоящих нерп (в игре можно) 😊</li>
+          </ul>
+          <div style="font-size:.9rem;color:#04415c">Есть вопросы? Напишите родителям Максима.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WISHLIST TAB -->
+    <section id="tab-wishlist" role="tabpanel" aria-labelledby="tabbtn-wishlist" class="card" hidden>
+      <h3>Wishlist (подарочные идеи)</h3>
+      <p>Добавляйте идеи и, если решили что-то взять, нажмите «Забронировано». Список хранится в твоём браузере.</p>
+      <div class="row">
+        <div class="field" style="flex:2">
+          <label for="wishText">Идея подарка</label>
+          <input id="wishText" type="text" placeholder="Например: пазл с нерпой, комикс, геймерская мышь" />
+        </div>
+        <div class="field" style="flex:1">
+          <label for="wishLink">Ссылка (необязательно)</label>
+          <input id="wishLink" type="text" placeholder="https://пример.магазин/товар" />
+        </div>
+        <div class="field">
+          <label>&nbsp;</label>
+          <button class="btn" id="addWish">Добавить</button>
+        </div>
+      </div>
+      <div id="wishes" class="grid" style="margin-top:12px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))"></div>
+      <div class="row" style="margin-top:10px">
+        <button class="btn ghost" id="exportWishlist">Экспорт (JSON)</button>
+        <button class="btn ghost" id="clearWishlist">Очистить список</button>
+      </div>
+    </section>
+
+    <!-- RSVP TAB -->
+    <section id="tab-rsvp" role="tabpanel" aria-labelledby="tabbtn-rsvp" class="card" hidden>
+      <h3>RSVP</h3>
+      <p>Сообщи, придёшь ли ты. Можно отправить письмо родителям или написать в мессенджер.</p>
+      <div class="grid grid-3">
+        <div class="card">
+          <div class="field">
+            <label for="guestName">Твоё имя</label>
+            <input id="guestName" type="text" placeholder="Например: Вика"/>
+          </div>
+          <div class="field">
+            <label for="guestMsg">Сообщение</label>
+            <textarea id="guestMsg" rows="4" placeholder="Я приду! Могу принести нерповые стикеры"></textarea>
+          </div>
+          <div class="row">
+            <button class="btn" id="mailtoBtn">Письмо родителям</button>
+            <button class="btn ghost" id="copyInvite">Скопировать приглашение</button>
+          </div>
+        </div>
+        <div class="card">
+          <h4>Полезно знать</h4>
+          <ul>
+            <li>Возраст: 13 лет</li>
+            <li>Тема: нерпы и морские приключения</li>
+            <li>Формат: друзья, игры, веселье</li>
+          </ul>
+        </div>
+        <div class="card" style="background:var(--mint)">
+          <h4>Мини-FAQ</h4>
+          <p><strong>Можно ли прийти с младшим братом/сестрой?</strong> Да, только предупреди заранее.</p>
+          <p><strong>Дарить подарки обязательно?</strong> Нет — главное прийти и повеселиться!</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Сделано с любовью к нерпам • © Максим 🦭
+  </footer>
+
+  <script>
+    // Smooth scroll shortcuts
+    const el = (id)=>document.getElementById(id);
+    el('scrollGames').onclick=()=>document.getElementById('tab-games').scrollIntoView({behavior:'smooth'});
+    el('scrollVenue').onclick=()=>document.getElementById('tab-venue').scrollIntoView({behavior:'smooth'});
+    el('scrollWishlist').onclick=()=>document.getElementById('tab-wishlist').scrollIntoView({behavior:'smooth'});
+
+    // Tabs logic
+    const tabs = ['games','venue','wishlist','rsvp'];
+    tabs.forEach(t=>{
+      el('tabbtn-'+t).addEventListener('click',()=>{
+        tabs.forEach(x=>{
+          el('tabbtn-'+x).setAttribute('aria-selected', x===t);
+          const pane = el('tab-'+x);
+          if(pane){pane.hidden = x!==t}
+        });
+      })
+    })
+
+    // Seal mascot eyes follow cursor
+    const eyeL = el('eyeL'), eyeR = el('eyeR');
+    document.addEventListener('mousemove', (e)=>{
+      const rect = eyeL.ownerSVGElement.getBoundingClientRect();
+      const cx = rect.left + rect.width/2, cy = rect.top + rect.height/2;
+      const dx = (e.clientX - cx)/rect.width, dy = (e.clientY - cy)/rect.height;
+      const lim = 6;
+      const tx = Math.max(-lim, Math.min(lim, dx*18));
+      const ty = Math.max(-lim, Math.min(lim, dy*18));
+      eyeL.style.transform = `translate(${tx}px,${ty}px)`;
+      eyeR.style.transform = `translate(${tx}px,${ty}px)`;
+    });
+
+    // === GAME 1: Feed the Seal ===
+    const gameArea = el('gameArea');
+    let score=0, timeLeft=30, timer=null, spawnInt=null;
+
+    function spawnFish(){
+      const f = document.createElement('div');
+      f.className='fish';
+      const size = 40 + Math.random()*40; f.style.width=size+'px';
+      const x=Math.random()*(gameArea.clientWidth - size);
+      f.style.left=x+'px'; f.style.top='-70px';
+      gameArea.appendChild(f);
+      const speed = 1 + Math.random()*2;
+      let y=-70; const fall = ()=>{
+        y += speed + (score/30);
+        f.style.top=y+'px';
+        if(y>gameArea.clientHeight){ f.remove(); return; }
+        requestAnimationFrame(fall);
+      }; fall();
+      f.addEventListener('click',()=>{ score++; el('score').textContent=score; f.remove(); sparkle(x+size/2, y); });
+    }
+    function sparkle(x,y){
+      for(let i=0;i<6;i++){
+        const b=document.createElement('div');
+        b.className='bubble';
+        b.style.left=(x-12 + Math.random()*24)+'px';
+        b.style.top=(y-12 + Math.random()*24)+'px';
+        gameArea.appendChild(b);
+        let a=1, t=0; const anim=()=>{ t+=1; a-=.02; b.style.opacity=a; b.style.transform=`translateY(${-t}px)`; if(a<=0){b.remove()} else requestAnimationFrame(anim)}; anim();
+      }
+    }
+    function startGame(){
+      clearInterval(timer); clearInterval(spawnInt); score=0; timeLeft=30; el('score').textContent=0; el('time').textContent=timeLeft;
+      spawnInt=setInterval(spawnFish, 700);
+      timer=setInterval(()=>{ timeLeft--; el('time').textContent=timeLeft; if(timeLeft<=0){ clearInterval(timer); clearInterval(spawnInt); alert('Игра окончена! Твои очки: '+score); } },1000)
+    }
+    el('startGame').onclick=startGame;
+    el('resetGame').onclick=()=>{[...gameArea.querySelectorAll('.fish,.bubble')].forEach(n=>n.remove()); score=0; timeLeft=30; el('score').textContent=0; el('time').textContent=timeLeft; };
+
+    // === GAME 2: Bubble Pop ===
+    const bubbles = el('bubbles');
+    let bubbleScore=0; el('burst').onclick=()=>{
+      for(let i=0;i<25;i++){
+        const bb=document.createElement('div'); bb.className='bubble';
+        bb.style.left=Math.random()*(bubbles.clientWidth-24)+'px';
+        bb.style.top=bubbles.clientHeight+Math.random()*80+'px';
+        bubbles.appendChild(bb);
+        const speed= 1 + Math.random()*2;
+        const drift=(Math.random()-.5)*1.2;
+        let y=parseFloat(bb.style.top), x=parseFloat(bb.style.left);
+        const rise=()=>{ y -= speed; x += drift; bb.style.top=y+'px'; bb.style.left=x+'px'; if(y<-30){ bb.remove(); return } requestAnimationFrame(rise) }; rise();
+        bb.addEventListener('click',()=>{ bubbleScore++; el('bubbleScore').textContent=bubbleScore; bb.remove(); })
+      }
+    }
+
+    // Riddles
+    const riddles=[
+      {q:'Кто единственный пресноводный тюлень в мире?',a:'Нерпа! (байкальская тюлень)'},
+      {q:'Что любит нерпа больше всего?',a:'Рыбку и чистую воду!'},
+      {q:'Как нерпа говорит, когда рада?',a:'«Я нерпа!» — и хлопает ластами 🦭'}
+    ];
+    let rid=0; el('nextRiddle').onclick=()=>{ rid=(rid+1)%riddles.length; el('riddle').textContent=riddles[rid].q; el('riddleAnswer').textContent=''; };
+    el('riddle').addEventListener('click',()=>{ el('riddleAnswer').textContent=riddles[rid].a; });
+
+    // Venue helpers
+    el('copyAddr').onclick=async()=>{
+      try{ await navigator.clipboard.writeText(el('eventAddr').value); toast('Адрес скопирован!') }catch{ toast('Не удалось скопировать 😅') }
+    }
+
+    // Create ICS for calendar
+    function toICSDate(dt){
+      const d=new Date(dt);
+      const pad=n=>String(n).padStart(2,'0');
+      return d.getUTCFullYear()+pad(d.getUTCMonth()+1)+pad(d.getUTCDate())+'T'+pad(d.getUTCHours())+pad(d.getUTCMinutes())+'00Z';
+    }
+    el('addToCalendar').onclick=()=>{
+      const title=el('eventTitle').value||'Событие';
+      const dt=el('eventDate').value; if(!dt){ alert('Выберите дату и время'); return }
+      const start=toICSDate(dt);
+      // 2 часа по умолчанию
+      const end=toICSDate(new Date(new Date(dt).getTime()+2*60*60*1000));
+      const loc=(el('eventPlace').value||'')+'; '+(el('eventAddr').value||'');
+      const desc=(el('eventNotes').value||'');
+      const ics = `BEGIN:VCALENDAR\nVERSION:2.0\nCALSCALE:GREGORIAN\nBEGIN:VEVENT\nDTSTAMP:${toICSDate(Date.now())}\nDTSTART:${start}\nDTEND:${end}\nSUMMARY:${title}\nLOCATION:${loc}\nDESCRIPTION:${desc}\nEND:VEVENT\nEND:VCALENDAR`;
+      const file=new Blob([ics],{type:'text/calendar'});
+      const url=URL.createObjectURL(file);
+      const a=document.createElement('a'); a.href=url; a.download='maksim-birthday.ics'; a.click(); URL.revokeObjectURL(url);
+    }
+
+    // Wishlist with localStorage
+    const storeKey='maksim_wishlist_v1';
+    const wishesBox=el('wishes');
+    function loadWishes(){
+      const raw=localStorage.getItem(storeKey); return raw?JSON.parse(raw):[];
+    }
+    function saveWishes(list){ localStorage.setItem(storeKey, JSON.stringify(list)) }
+    function renderWishes(){
+      wishesBox.innerHTML='';
+      const list=loadWishes();
+      if(!list.length){ wishesBox.innerHTML='<div style="opacity:.7">Пока пусто — добавь первую идею!</div>'; return }
+      list.forEach((w,i)=>{
+        const card=document.createElement('div'); card.className='wish-item'+(w.reserved?' reserved':'');
+        const left=document.createElement('div');
+        const title=document.createElement('div'); title.className='wish-title'; title.textContent=w.text;
+        left.appendChild(title);
+        if(w.link){ const link=document.createElement('a'); link.href=w.link; link.target='_blank'; link.textContent='ссылка'; left.appendChild(link) }
+        card.appendChild(left);
+        const right=document.createElement('div'); right.className='row';
+        const btnRes=document.createElement('button'); btnRes.className='btn'; btnRes.textContent=w.reserved?'Забронировано ✓':'Забронировать'; btnRes.onclick=()=>{ const lst=loadWishes(); lst[i].reserved=!lst[i].reserved; saveWishes(lst); renderWishes(); };
+        const btnDel=document.createElement('button'); btnDel.className='btn ghost'; btnDel.textContent='Удалить'; btnDel.onclick=()=>{ const lst=loadWishes(); lst.splice(i,1); saveWishes(lst); renderWishes(); };
+        right.appendChild(btnRes); right.appendChild(btnDel); card.appendChild(right);
+        wishesBox.appendChild(card);
+      })
+    }
+    el('addWish').onclick=()=>{
+      const text=el('wishText').value.trim(); const link=el('wishLink').value.trim();
+      if(!text){ toast('Напиши идею подарка'); return }
+      const list=loadWishes(); list.push({text,link, reserved:false}); saveWishes(list); el('wishText').value=''; el('wishLink').value=''; renderWishes();
+    }
+    el('clearWishlist').onclick=()=>{ if(confirm('Точно очистить список?')){ localStorage.removeItem(storeKey); renderWishes(); } }
+    el('exportWishlist').onclick=()=>{
+      const data = new Blob([JSON.stringify(loadWishes(),null,2)],{type:'application/json'});
+      const url=URL.createObjectURL(data); const a=document.createElement('a'); a.href=url; a.download='wishlist.json'; a.click(); URL.revokeObjectURL(url);
+    }
+    renderWishes();
+
+    // RSVP helpers
+    el('mailtoBtn').onclick=()=>{
+      const n=encodeURIComponent(el('guestName').value||'');
+      const m=encodeURIComponent(el('guestMsg').value||'');
+      const subj=encodeURIComponent('RSVP на День рождения Максима');
+      const body=encodeURIComponent(`${n?('Я — '+n+'! '):''}${el('guestMsg').value||'Приду на праздник!'}\n\nДо встречи!`);
+      window.location.href=`mailto:parents@example.com?subject=${subj}&body=${body}`;
+    }
+    el('copyInvite').onclick=async()=>{
+      const title = el('eventTitle').value||'День рождения Максима';
+      const when = el('eventDate').value? new Date(el('eventDate').value).toLocaleString(): '(уточняется)';
+      const place = el('eventPlace').value||''; const addr=el('eventAddr').value||'';
+      const text = `Приглашение: ${title}\nКогда: ${when}\nГде: ${place}, ${addr}\nТема: нерпы! «Я нерпа!»\nСкажи, придёшь ли — пиши тут.`;
+      try{ await navigator.clipboard.writeText(text); toast('Приглашение скопировано!') }catch{ toast('Не удалось скопировать 😅') }
+    }
+
+    // Tiny toast
+    function toast(msg){
+      const t=document.createElement('div'); t.textContent=msg; t.style.cssText='position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:#003a57;color:#fff;padding:10px 14px;border-radius:12px;box-shadow:0 8px 16px rgba(0,0,0,.2);z-index:9999';
+      document.body.appendChild(t); setTimeout(()=>t.remove(),2200);
+    }
+  </script>
+</body>
+</html>
